@@ -84,7 +84,7 @@ export const App = () => {
       {checkPages() && (
         <Button isLoading={isLoading} onClick={handlePagination} />
       )}
-      <PageUpButton></PageUpButton>
+      {/* <PageUpButton></PageUpButton> */}
 
       <ToastContainer
         position="top-right"
