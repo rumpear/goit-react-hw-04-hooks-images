@@ -7,7 +7,6 @@ import { Searchbar } from './Searchbar';
 import { ImageGallery } from './ImageGallery';
 import { Button } from './Button';
 import { Loader } from './Loader';
-import { PageUpButton } from './PageUpButton';
 import { ErrorMessage } from './ErrorMessage';
 
 import { Wrapper } from './App.styled';
@@ -84,7 +83,6 @@ export const App = () => {
       {checkPages() && (
         <Button isLoading={isLoading} onClick={handlePagination} />
       )}
-      {/* <PageUpButton></PageUpButton> */}
 
       <ToastContainer
         position="top-right"
