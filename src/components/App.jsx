@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
+import { InView } from 'react-intersection-observer';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { fetchImages } from '../services/pixabayService';
 import { Searchbar } from './Searchbar';
 import { ImageGallery } from './ImageGallery';
-import { Button } from './Button';
 import { Loader } from './Loader';
 import { PageUpButton } from './PageUpButton';
 import { ErrorMessage } from './ErrorMessage';
@@ -65,9 +65,9 @@ export const App = () => {
     setPage(page => page + 1);
   };
 
-  const checkPages = () => {
-    const totalPages = Math.floor(totalNumberOfPhotos / 12);
-    return page < totalPages && photoList.length >= 12;
+  const checkPagesCount = () => {
+    const totalPages = Math.floor(totalNumberOfPhotos / 30);
+    return page < totalPages && photoList.length >= 30;
   };
 
   return (
@@ -77,17 +77,27 @@ export const App = () => {
         isSearch={isLoading}
         searchQuery={searchQuery}
       />
+
       {error && <ErrorMessage message={error.message} />}
+
       {photoList.length > 0 && <ImageGallery photoList={photoList} />}
+
       {isLoading && <Loader />}
-      {checkPages() && (
-        <Button isLoading={isLoading} onClick={handlePagination} />
+
+      {checkPagesCount() && (
+        <InView
+          as="div"
+          onChange={(inView, entry) =>
+            inView && !isLoading && handlePagination()
+          }
+        />
       )}
-      <PageUpButton></PageUpButton>
+
+      <PageUpButton />
 
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
