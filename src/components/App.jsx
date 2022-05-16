@@ -43,7 +43,7 @@ export const App = () => {
           };
         });
 
-        setPhotoList(prevPhotoList => [...prevPhotoList, ...photos]);
+        setPhotoList(photoList => [...photoList, ...photos]);
         setTotalNumberOfPhotos(totalHits);
       } catch (error) {
         setError(error);
