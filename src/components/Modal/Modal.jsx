@@ -7,15 +7,15 @@ const modalRoot = document.querySelector('#modal-root');
 
 export const Modal = ({ children, onCloseModal }) => {
   useEffect(() => {
+    const handleEscKeydown = e => {
+      if (e.code === 'Escape') onCloseModal();
+    };
+
     window.addEventListener('keydown', handleEscKeydown);
     return () => {
       window.removeEventListener('keydown', handleEscKeydown);
     };
-  }, []);
-
-  const handleEscKeydown = e => {
-    if (e.code === 'Escape') onCloseModal();
-  };
+  }, [onCloseModal]);
 
   const handleOverlayClick = e => {
     if (e.currentTarget === e.target) onCloseModal();
