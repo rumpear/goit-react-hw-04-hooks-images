@@ -14,7 +14,7 @@ import { Wrapper } from './App.styled';
 
 export const App = () => {
   const [searchQuery, setSearchQuery] = useState('nature');
-  const [totalNumberOfPhotos, setTotalNumberOfPhotos] = useState(0);
+  const [totalNumberOfPhotos, setTotalNumberOfPhotos] = useState(null);
   const [photoList, setPhotoList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -54,20 +54,22 @@ export const App = () => {
     getPhotos(searchQuery, page);
   }, [searchQuery, page]);
 
+  useEffect(() => {
+    if (totalNumberOfPhotos === photoList.length) {
+      toast.warn(`You've reached the end of search results`);
+    }
+  }, [totalNumberOfPhotos, photoList.length]);
+
   const handleSearch = value => {
     setSearchQuery(value);
     setPhotoList([]);
     setPage(1);
     setError(null);
+    setTotalNumberOfPhotos(null);
   };
 
   const handlePagination = () => {
     setPage(page => page + 1);
-  };
-
-  const checkPagesCount = () => {
-    const totalPages = Math.floor(totalNumberOfPhotos / 30);
-    return page < totalPages && photoList.length >= 30;
   };
 
   return (
@@ -84,12 +86,10 @@ export const App = () => {
 
       {isLoading && <Loader />}
 
-      {checkPagesCount() && (
+      {totalNumberOfPhotos > photoList.length && (
         <InView
           as="div"
-          onChange={(inView, entry) =>
-            inView && !isLoading && handlePagination()
-          }
+          onChange={inView => inView && !isLoading && handlePagination()}
         />
       )}
 
